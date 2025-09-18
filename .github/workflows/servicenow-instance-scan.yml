@@ -16,7 +16,7 @@ jobs:
     
       - name: ServiceNow CI/CD Instance Scan
         # Usando a versão específica que você definiu
-        uses: ServiceNow/sncicd-instance-scan@2.0.0
+        uses: ServiceNow/sncicd-instance-scan@3acee37296d42bfafcb50cb04253409a83b42c44
         id: scan
         with:
           # --- Parâmetros de Scan ---
