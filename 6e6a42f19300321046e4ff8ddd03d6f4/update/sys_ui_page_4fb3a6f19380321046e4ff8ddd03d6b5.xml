@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script/>
+        <description/>
+        <direct>false</direct>
+        <endpoint/>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<jelly>
+  <html>
+    <head>
+      <title>CI/CD Dashboard 2026V2</title>
+      <style>
+        body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background: linear-gradient(135deg, #1f2937, #111827);
+          color: #f9fafb;
+          padding: 20px;
+        }
+
+        h1 {
+          text-align: center;
+          font-size: 2rem;
+          margin-bottom: 30px;
+          color: #38bdf8;
+        }
+
+        .pipeline {
+          display: flex;
+          justify-content: space-around;
+          gap: 20px;
+        }
+
+        .stage {
+          flex: 1;
+          padding: 20px;
+          border-radius: 12px;
+          background-color: #1e3a8a;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+          text-align: center;
+        }
+
+        .stage h2 {
+          margin-bottom: 10px;
+          font-size: 1.25rem;
+        }
+
+        .status {
+          font-weight: bold;
+          padding: 8px 16px;
+          border-radius: 20px;
+          display: inline-block;
+          margin-top: 10px;
+        }
+
+        .success {
+          background: #16a34a;
+          color: #fff;
+        }
+
+        .failed {
+          background: #dc2626;
+          color: #fff;
+        }
+
+        .running {
+          background: #f59e0b;
+          color: #fff;
+        }
+
+        .footer {
+          text-align: center;
+          margin-top: 40px;
+          font-size: 0.9rem;
+          opacity: 0.8;
+        }
+      </style>
+    </head>
+    <body>
+      <h1>]]>🚀<![CDATA[ CI/CD Pipeline - ServiceNow</h1>
+
+      <div class="pipeline">
+        <div class="stage">
+          <h2>Build</h2>
+          <div class="status success">✔ Sucesso</div>
+        </div>
+        <div class="stage">
+          <h2>Testes</h2>
+          <div class="status running">⏳ Em execução</div>
+        </div>
+        <div class="stage">
+          <h2>Deploy</h2>
+          <div class="status failed">❌ Falhou</div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>Última execução: ${gs.nowDateTime()}</p>
+      </div>
+    </body>
+  </html>
+</jelly>]]></html>
+        <name>cic_servicenow</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-09-18 15:27:27</sys_created_on>
+        <sys_id>4fb3a6f19380321046e4ff8ddd03d6b5</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>cic_servicenow</sys_name>
+        <sys_package display_value="APP_CICD" source="6e6a42f19300321046e4ff8ddd03d6f4">6e6a42f19300321046e4ff8ddd03d6f4</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="APP_CICD">6e6a42f19300321046e4ff8ddd03d6f4</sys_scope>
+        <sys_update_name>sys_ui_page_4fb3a6f19380321046e4ff8ddd03d6b5</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-09-18 19:43:40</sys_updated_on>
+    </sys_ui_page>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>4fb3a6f19380321046e4ff8ddd03d6b5</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-09-18 15:27:02</sys_created_on>
+        <sys_id>c004eaf19380321046e4ff8ddd03d6d4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-09-18 15:27:02</sys_updated_on>
+        <table>sys_ui_page</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>
