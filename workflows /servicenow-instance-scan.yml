@@ -1,0 +1,31 @@
+name: ServiceNow CI/CD Instance Scan
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  scan-app: # Renomeei o job para um nome válido (não pode ter espaços)
+    name: Scan App
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+      - name: ServiceNow CI/CD Instance Scan
+        # Usando a versão específica que você definiu
+        uses: ServiceNow/sncicd-instance-scan@3acee37296d42bfafcb50cb04253409a83b42c44
+        id: scan
+        with:
+          # --- Parâmetros de Scan ---
+          scantype: 'suite_update'
+          suiteSysId: 532840af20a70110fa9b96e15935cc77
+          updateSetSysIds: 24b462f19380321046e4ff8ddd03d622
+
+          # --- CREDENCIAIS CORRIGIDAS ---
+          # Movidas de 'env:' para 'with:' conforme a documentação da v2.0.0
+          instanceUrl: ${{ secrets.NOW_SCAN_INSTANCE }}
+          instanceUsername: ${{ secrets.NOW_USERNAME }}
+          instancePassword: ${{ secrets.NOW_PASSWORD }}
