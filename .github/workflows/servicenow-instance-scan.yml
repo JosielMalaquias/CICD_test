@@ -1,42 +1,33 @@
-# This is a basic workflow to help you get started with Actions
 name: ServiceNow_Scan_Instance
-# Controls when the action will run.
+
 on:
-    # Triggers the workflow on push or pull request events but only for the master branch
-    push:
-        branches: [master]
-    pull_request:
-        branches: [master]
-    # Allows you to run this workflow manually from the Actions tab
-    workflow_dispatch:
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
 jobs:
-    test:
-    # Purpose of this job is to Scan Instance. This should only 
-    # trigger if the feature branch has been merged to master after a successfully 
-    # completed pull request, hence the conditional for push to master.
-        name: Scan App
-        runs-on: ubuntu-latest
+  scan-app: # Renomeei o job para um nome válido (não pode ter espaços)
+    name: Scan App
+    runs-on: ubuntu-latest
     
-        steps:
-            - name: ServiceNow CI/CD Instance Scan
-              uses: ServiceNow/sncicd-instance-scan@2.0.0
-              id: scan
-              with:
-                # scantype is always Required
-                scantype: suite_update # full, point, suite_combo, suite_scoped, suite_update
-                # Required on point
-                #targetTable: abcdef
-                #targetSysId: 1a2b3c4d5e6f
-                # Required on suite_combo
-                #comboSysId: 1a2b3c4d5e6f
-                # Required on suite_scoped, suite_update
-                suiteSysId: 532840af20a70110fa9b96e15935cc77
-                # Required on suite_scoped
-                #appScopeSysIds: 1a2b3c,4d5e6f
-                # Required on suite_update
-                updateSetSysIds: 24b462f19380321046e4ff8ddd03d622
-              env:
-                nowUsername: ${{ secrets.NOW_USERNAME }}
-                nowPassword: ${{ secrets.NOW_PASSWORD }}
-                nowScanInstance: ${{ secrets.NOW_SCAN_INSTANCE }}
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+
+      - name: ServiceNow CI/CD Instance Scan
+        # Usando a versão específica que você definiu
+        uses: ServiceNow/sncicd-instance-scan@2.0.0
+        id: scan
+        with:
+          # --- Parâmetros de Scan ---
+          scantype: 'suite_update'
+          suiteSysId: 532840af20a70110fa9b96e15935cc77
+          updateSetSysIds: 24b462f19380321046e4ff8ddd03d622
+
+          # --- CREDENCIAIS CORRIGIDAS ---
+          # Movidas de 'env:' para 'with:' conforme a documentação da v2.0.0
+          instanceUrl: ${{ secrets.NOW_SCAN_INSTANCE }}
+          instanceUsername: ${{ secrets.NOW_USERNAME }}
+          instancePassword: ${{ secrets.NOW_PASSWORD }}
