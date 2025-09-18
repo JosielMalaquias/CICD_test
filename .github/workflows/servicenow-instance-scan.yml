@@ -34,7 +34,7 @@ jobs:
       # ---------------------------------------------------------------------
 
       - name: Run ServiceNow Instance Scan on Update Set
-        uses: ServiceNow/sncicd-instance-scan@v2
+        uses: ServiceNow/sn-cicd-instance-scan@v2
         with:
           # Credenciais (as mesmas de antes)
           instanceUrl: ${{ secrets.SN_INSTANCE_URL }}
