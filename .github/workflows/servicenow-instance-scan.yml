@@ -1,56 +1,53 @@
 # Nome do Workflow
-name: 'ServiceNow - Scan Branch Changes'
+name: 'ServiceNow - Scan Branch on PR'
 
 # Gatilho: Roda quando uma Pull Request é aberta ou atualizada para a branch 'main'
 on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:
+  workflow_dispatch: # Permite rodar manualmente também
 
 jobs:
-  run-branch-scan:
+  scan-pull-request-changes:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      # Passo 1: Fazer o checkout do código do SEU repositório.
+      # Este passo é OBRIGATÓRIO porque a sua action ("uses: ./...") é local.
+      - name: Checkout repository code
         uses: actions/checkout@v3
 
-      # ---------------------------------------------------------------------
-      # IMPORTANTE: Normalmente, haveria um passo aqui para aplicar
-      # as mudanças da branch (ex: Update Set) na instância de scan.
-      # Essa etapa geraria o sys_id do Update Set como um output.
-      # Exemplo (usando outra action do ServiceNow):
-      #
-      # - name: Apply Update Set to Test Instance
-      #   id: apply_changes # Damos um ID para referenciar o output depois
-      #   uses: ServiceNow/sncicd-apply-changes@v2
-      #   with:
-      #     # ...parâmetros de conexão...
-      #     updateSetSysId: 'SYS_ID_DO_UPDATE_SET_DO_DESENVOLVEDOR'
-      #
-      # O output seria acessado com: ${{ steps.apply_changes.outputs.updateSetSysId }}
-      # Para este exemplo, vamos usar um sys_id fixo, mas você deve automatizar isso.
-      # ---------------------------------------------------------------------
+      # Passo 2 (Placeholder): Obter o sys_id do Update Set da branch.
+      # Em um pipeline real, este passo seria substituído por uma automação
+      # que aplica o Update Set em uma instância de teste e retorna o sys_id.
+      - name: 'Placeholder: Get Update Set Sys ID'
+        id: get_update_set
+        run: echo "updateset_sysid=24b462f19380321046e4ff8ddd03d622" >> $GITHUB_OUTPUT
 
-      - name: Run ServiceNow Instance Scan on Update Set
-        uses: ServiceNow/sn-cicd-instance-scan@v2
+      # Passo 3: Executar a sua action de scan local
+      - name: ServiceNow CI/CD Instance Scan
+        # Usando a sua action local, como no seu exemplo
+        uses: ./.github/actions/scan
+        id: scan
         with:
-          # Credenciais (as mesmas de antes)
-          instanceUrl: ${{ secrets.SN_INSTANCE_URL }}
-          instanceUsername: ${{ secrets.SN_USERNAME }}
-          instancePassword: ${{ secrets.SN_PASSWORD }}
+          # --- Parâmetros Adaptados para Pull Request ---
 
-          # --- Parâmetros de Scan para a Branch ---
+          # 1. Mude o scantype para escanear um Update Set
+          scantype: 'suite_update'
 
-          # 1. Tipo de Scan: 'suite_update' para escanear Update Sets
-          scanType: 'suite_update'
-
-          # 2. ID da Suíte de Scans: Qual conjunto de regras usar?
-          #    Você precisa pegar este sys_id da sua instância.
+          # 2. Forneça o sys_id da Suíte de Scan que você quer usar
+          #    (Encontre em Instance Scan > Scan Suites na sua instância)
           suiteSysId: '532840af20a70110fa9b96e15935cc77' # Exemplo: "Development Best Practices"
 
-          # 3. ID do Update Set: O sys_id do Update Set que contém as mudanças da branch.
-          #    O ideal é que este valor venha de um passo anterior no pipeline.
-          updateSetSysIds: '24b462f19380321046e4ff8ddd03d622'
-          # Exemplo automatizado: updateSetSysIds: ${{ steps.apply_changes.outputs.appliedUpdateSetSysId }}
+          # 3. Forneça o sys_id do Update Set que veio do passo anterior
+          updateSetSysIds: ${{ steps.get_update_set.outputs.updateset_sysid }}
+
+          # Removemos os outros parâmetros (targetTable, appScopeSysIds, etc.)
+          # porque eles não são necessários para o scantype 'suite_update'.
+
+        # Atenção: Usando as variáveis de ambiente do seu exemplo
+        env:
+          nowUsername: ${{ secrets.NOW_USERNAME }}
+          nowPassword: ${{ secrets.NOW_PASSWORD }}
+          nowScanInstance: ${{ secrets.NOW_SCAN_INSTANCE }}
