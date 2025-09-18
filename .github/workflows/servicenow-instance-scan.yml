@@ -1,4 +1,4 @@
-name: 'ServiceNow - Scan Branch on PR'
+name: 'ServiceNow - Scan Branch on PR (Public Action)'
 
 on:
   pull_request:
@@ -11,25 +11,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # PASSO 1 (ESSENCIAL): Baixar o código do seu repositório
-      # Esta linha corrige o erro. Ela torna a pasta ./.github/actions/scan visível.
+      # Passo 1: Checkout do código (boa prática, pode ser necessário para outros passos)
       - name: Checkout repository code
         uses: actions/checkout@v3
 
-      # PASSO 2 (Placeholder): Obter o sys_id do seu Update Set
+      # Passo 2 (Placeholder): Obter o sys_id do Update Set
       - name: 'Placeholder: Get Update Set Sys ID'
         id: get_update_set
         run: echo "updateset_sysid=24b462f19380321046e4ff8ddd03d622" >> $GITHUB_OUTPUT
 
-      # PASSO 3: Executar a sua ação local de scan
-      - name: ServiceNow CI/CD Instance Scan
-        uses: ./.github/actions/scan # Agora o GitHub encontrará este caminho
-        id: scan
+      # Passo 3: Executar a AÇÃO PÚBLICA da ServiceNow
+      - name: Run ServiceNow Instance Scan
+        # Usando a action pública e a versão correta
+        uses: ServiceNow/sncicd-instance-scan@v1
         with:
-          scantype: 'suite_update'
+          # Parâmetros são passados via "with", não "env"
+          instanceUrl: ${{ secrets.NOW_SCAN_INSTANCE }} # Usando seus nomes de secrets
+          instanceUsername: ${{ secrets.NOW_USERNAME }}
+          instancePassword: ${{ secrets.NOW_PASSWORD }}
+
+          # Parâmetros do Scan
+          scanType: 'suite_update'
           suiteSysId: '532840af20a70110fa9b96e15935cc77' # Exemplo
           updateSetSysIds: ${{ steps.get_update_set.outputs.updateset_sysid }}
-        env:
-          nowUsername: ${{ secrets.NOW_USERNAME }}
-          nowPassword: ${{ secrets.NOW_PASSWORD }}
-          nowScanInstance: ${{ secrets.NOW_SCAN_INSTANCE }}
