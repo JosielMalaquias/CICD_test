@@ -32,7 +32,7 @@ jobs:
 
       # Agora sim, rodar o scan
       - name: ServiceNow CI/CD Instance Scan
-        uses: ServiceNow/sncicd-instance-scan@3acee37296d42bfafcb50cb04253409a83b42c44
+        uses: ServiceNow/sncicd-instance-scan2@3acee37296d42bfafcb50cb04253409a83b42c44
         id: scan
         with:
           scantype: 'suite_update'
