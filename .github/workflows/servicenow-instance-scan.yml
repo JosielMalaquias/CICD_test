@@ -1,4 +1,4 @@
-name: ServiceNow_Scan_Instance
+name: ServiceNow CI/CD Instance Scan
 
 on:
   push:
@@ -13,9 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository code
-        uses: actions/checkout@v3
-
+    
       - name: ServiceNow CI/CD Instance Scan
         # Usando a versão específica que você definiu
         uses: ServiceNow/sncicd-instance-scan@2.0.0
